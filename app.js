@@ -71,6 +71,42 @@ const portfolioData = {
         "To Performe root cause analysis of the issues reported in production and provided reports to key stakeholders."
       ],
       "technologies": ["Git", "Docker", "Jenkins", "AWS", "Terraform", "Python", "Java"]
+    },
+    {
+      "company": "Cassiopae Solutions (acquired by Sopra Banking)",
+      "role": "Technical Support Engineer",
+      "duration": "Mar 2016 - Apr 2017",
+      "location": "Pune, India",
+      "achievements": [
+        "Monitoring of Cassiopae application 24/7 using tools like Nagios.",
+        "Developed a tool which fetched issues from SonarQube and created tickets in JIRA and assign newly created ticket to the developer. This tool was created using RESTful WebServices in JAVA.",
+        "As part of PoC, we built and deployed a monolith application in Docker. Created a Docker image from scratch and deployed it to the Windows server. This environment was used by Business Analysts for their demos."
+      ],
+      "technologies": ["Git", "Docker", "Jenkins", "Sonar", "Linux", "Shell scripting", "Java"]
+    },
+    {
+      "company": "DhanpraTech Solutions",
+      "role": "Associate Software Engineer",
+      "duration": "Sep 2015 - Feb 2016",
+      "location": "Pune, India",
+      "achievements": [
+        "Develop application for a sliding window manufacturer.",
+        "Communication with clients on a weekly basis, including data gathering, reporting and presenting demos of completed modules."
+      ],
+      "technologies": ["Git", "Java", "Apache Tomact"]
+    },
+    {
+      "company": "Impact Infotech",
+      "role": "Desktop Support Engineer",
+      "duration": "Apr 2014 - Jul 2015",
+      "location": "Pune, India",
+      "achievements": [
+        "Resolve assigned issues within SLA.",
+        "Troubleshoot issues and inform end users about the issue with an estimated time to resolution.",
+        "Communicate with other support teams like Network Admin, Voice Admin and Server Admin to analyze issues so that resolution to issue is found in a short time span.",
+        "Provide daily shift updates to system admin and helpdesk manager."
+      ],
+      "technologies": ["Windows", "Troubleshooting", "L1 Support"]
     }
   ],
   "certifications": [
@@ -196,9 +232,9 @@ class PortfolioApp {
   populateContent() {
     this.populateSkills();
     this.populateExperience();
-    this.populateProjects();
+    //this.populateProjects();
     this.populateCertifications();
-    this.populateMetrics();
+    //this.populateMetrics();
   }
 
   populateSkills() {
@@ -284,7 +320,7 @@ class PortfolioApp {
     });
   }
 
-  populateProjects() {
+  /*populateProjects() {
     const projectsGrid = document.getElementById('projectsGrid');
     if (!projectsGrid) return;
     
@@ -340,7 +376,7 @@ class PortfolioApp {
       
       projectsGrid.appendChild(projectCard);
     });
-  }
+  }*/
 
   populateCertifications() {
     const certificationsGrid = document.getElementById('certificationsGrid');
@@ -364,7 +400,7 @@ class PortfolioApp {
     });
   }
 
-  populateMetrics() {
+  /*populateMetrics() {
     const metricsGrid = document.getElementById('metricsGrid');
     if (!metricsGrid) return;
     
@@ -404,7 +440,7 @@ class PortfolioApp {
       
       metricsGrid.appendChild(metricCard);
     });
-  }
+  }*/
 
   openProjectModal(projectIndex) {
     const project = portfolioData.projects[projectIndex];
