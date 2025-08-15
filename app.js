@@ -110,7 +110,7 @@ const portfolioData = {
     }
   ],
   "certifications": [
-    {"name": "AWS Certified Solution Architect - Associate", "issuer": "Amazon Web Services", "year": "2023"}
+    {"name": "AWS Certified Solution Architect - Associate", "issuer": "Amazon Web Services", "year": "2022"}
   ]
 };
 
