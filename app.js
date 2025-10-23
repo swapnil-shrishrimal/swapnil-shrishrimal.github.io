@@ -595,13 +595,17 @@ class PortfolioApp {
     }
     
     // Download resume button
-    const downloadResume = document.getElementById('downloadResume');
-    if (downloadResume) {
-      downloadResume.addEventListener('click', (e) => {
-        e.preventDefault();
-        alert('Resume download functionality would be implemented here. In a real implementation, this would download a PDF resume file.');
-      });
-    }
+    document.getElementById('downloadResume')?.addEventListener('click', (e) => {
+  e.preventDefault();
+  const resumeUrl = 'assets/resume/Swapnil_Shrishrimal_DevOps_Professional.pdf';
+  const a = document.createElement('a');
+  a.href = resumeUrl;
+  a.download = 'Swapnil_Shrishrimal_DevOps_Professional.pdf';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+});
+
   }
 
   handleContactForm(form) {
