@@ -4,7 +4,7 @@
 const portfolioData = {
   "personalInfo": {
     "name": "Swapnil Shrishrimal",
-    "title": "DevOps Practitioner",
+    "title": "Senior Specialist - Software Engineering",
     "tagline": "Building scalable infrastructure and automating the future",
     "email": "shrishrimalswapnil@gmail.com",
     "phone": "+91 9028190191",
@@ -39,16 +39,28 @@ const portfolioData = {
   "experience": [
     {
       "company": "LTIMindtree",
-      "role": "Specialist - Software Engineering",
-      "duration": "Feb 2023 - Present",
+      // ── NEW promoted role ──────────────────────────────────────
+      "role": "Senior Specialist - Software Engineering",
+      "duration": "Jan 2026 - Present",           // ← update with your actual start month
       "location": "Pune, India",
+      "promoted": true,                        // flag drives the "↑ Promoted" pill
       "achievements": [
-        "Led migration of microservices from the in-house NinjaGo tool to the Engineering System Platform (ESP).",
-        "Managed 20+ microservices across Kubernetes clusters",
-        "Initiated and completed improvements such as pull request analysis in builds using the community edition of Sonar",
-        "Right-sizing of resources utilized by microservices on Mirantis Kubernetes Engine, saving cost by 40%"
+        // Add your new responsibilities / achievements for this role here
+        "Leading end-to-end DevOps strategy and platform engineering initiatives.",
+        "Driving cross-team adoption of infrastructure automation best practices."
       ],
-      "technologies": ["Git", "Kubernetes", "Terraform", "Jenkins", "Python", "Docker", "Sysdig Monitor"]
+      "technologies": ["Git", "Kubernetes", "Terraform", "Jenkins", "Python", "Docker", "Sysdig Monitor"],
+      // ── Previous role at the same company ─────────────────────
+      "previousRole": {
+        "role": "Software Engineer",           // ← your old title before promotion
+        "duration": "Feb 2023 - Dec 2025",         // ← update with your actual end month
+        "achievements": [
+          "Led migration of microservices from the in-house NinjaGo tool to the Engineering System Platform (ESP).",
+          "Managed 20+ microservices across Kubernetes clusters",
+          "Initiated and completed improvements such as pull request analysis in builds using the community edition of Sonar",
+          "Right-sizing of resources utilized by microservices on Mirantis Kubernetes Engine, saving cost by 40%"
+        ]
+      }
     },
     {
       "company": "Accenture Solutions Pvt. Ltd",
@@ -122,7 +134,6 @@ class PortfolioApp {
   }
 
   init() {
-    // Wait for DOM to be fully loaded
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => {
         this.initializeApp();
@@ -152,7 +163,6 @@ class PortfolioApp {
       document.documentElement.setAttribute('data-color-scheme', this.currentTheme);
       themeIcon.textContent = this.currentTheme === 'light' ? '🌙' : '☀️';
       
-      // Add rotation animation
       themeIcon.style.transition = 'transform 0.3s ease';
       themeIcon.style.transform = 'rotate(360deg)';
       setTimeout(() => {
@@ -166,7 +176,6 @@ class PortfolioApp {
     const mobileMenuToggle = document.getElementById('mobileMenuToggle');
     const navLinksContainer = document.querySelector('.nav-links');
     
-    // Handle nav link clicks with proper smooth scrolling
     navLinks.forEach(link => {
       link.addEventListener('click', (e) => {
         e.preventDefault();
@@ -183,25 +192,21 @@ class PortfolioApp {
           });
         }
         
-        // Update active link
         navLinks.forEach(l => l.classList.remove('active'));
         link.classList.add('active');
         
-        // Close mobile menu if open
         if (navLinksContainer && navLinksContainer.classList.contains('active')) {
           navLinksContainer.classList.remove('active');
         }
       });
     });
 
-    // Mobile menu toggle
     if (mobileMenuToggle && navLinksContainer) {
       mobileMenuToggle.addEventListener('click', () => {
         navLinksContainer.classList.toggle('active');
       });
     }
 
-    // Update active nav on scroll
     window.addEventListener('scroll', () => {
       this.updateActiveNavLink();
     });
@@ -232,9 +237,7 @@ class PortfolioApp {
   populateContent() {
     this.populateSkills();
     this.populateExperience();
-    //this.populateProjects();
     this.populateCertifications();
-    //this.populateMetrics();
   }
 
   populateSkills() {
@@ -266,7 +269,6 @@ class PortfolioApp {
       
       skillsGrid.appendChild(categoryElement);
       
-      // Animate skill bars after a delay
       setTimeout(() => {
         const progressBars = categoryElement.querySelectorAll('.skill-progress');
         progressBars.forEach((bar, index) => {
@@ -287,30 +289,57 @@ class PortfolioApp {
       const timelineItem = document.createElement('div');
       timelineItem.className = 'timeline-item fade-in-up';
       timelineItem.style.animationDelay = `${index * 0.2}s`;
-      
-      const achievements = exp.achievements.map(achievement => 
-        `<li class="timeline-achievement">${achievement}</li>`
+
+      const promotedPill = exp.promoted
+        ? `<span class="promoted-pill">↑ Promoted</span>`
+        : '';
+
+      const technologies = exp.technologies
+        ? exp.technologies.map(tech => `<span class="tech-tag">${tech}</span>`).join('')
+        : '';
+
+      // Build current role achievements
+      const currentAchievements = exp.achievements.map(a =>
+        `<li class="timeline-achievement">${a}</li>`
       ).join('');
-      
-      const technologies = exp.technologies.map(tech => 
-        `<span class="tech-tag">${tech}</span>`
-      ).join('');
-      
+
+      // Build previous role block (only for promoted entries)
+      let previousRoleHTML = '';
+      if (exp.previousRole) {
+        const prevAchievements = exp.previousRole.achievements.map(a =>
+          `<li class="timeline-achievement">${a}</li>`
+        ).join('');
+        previousRoleHTML = `
+          <div class="timeline-role-block">
+            <div class="prev-role-label">Previously</div>
+            <div class="timeline-role">${exp.previousRole.role}</div>
+            <div class="timeline-duration">${exp.previousRole.duration} • ${exp.location}</div>
+            <ul class="timeline-achievements">
+              ${prevAchievements}
+            </ul>
+          </div>
+        `;
+      }
+
       timelineItem.innerHTML = `
         <div class="timeline-content" data-exp-index="${index}">
           <div class="timeline-company">${exp.company}</div>
-          <div class="timeline-role">${exp.role}</div>
-          <div class="timeline-duration">${exp.duration} • ${exp.location}</div>
-          <ul class="timeline-achievements">
-            ${achievements}
-          </ul>
-          <div class="timeline-technologies">
-            ${technologies}
+          <div class="timeline-role-block">
+            <div class="timeline-role">
+              ${exp.role}${promotedPill}
+            </div>
+            <div class="timeline-duration">${exp.duration} • ${exp.location}</div>
+            <ul class="timeline-achievements">
+              ${currentAchievements}
+            </ul>
+            <div class="timeline-technologies">
+              ${technologies}
+            </div>
           </div>
+          ${previousRoleHTML}
         </div>
       `;
       
-      // Add click event to timeline content
       const timelineContent = timelineItem.querySelector('.timeline-content');
       timelineContent.addEventListener('click', () => {
         this.openExperienceModal(index);
@@ -319,64 +348,6 @@ class PortfolioApp {
       timeline.appendChild(timelineItem);
     });
   }
-
-  /*populateProjects() {
-    const projectsGrid = document.getElementById('projectsGrid');
-    if (!projectsGrid) return;
-    
-    portfolioData.projects.forEach((project, index) => {
-      const projectCard = document.createElement('div');
-      projectCard.className = 'project-card fade-in-up';
-      projectCard.style.animationDelay = `${index * 0.1}s`;
-      
-      const technologies = project.technologies.map(tech => 
-        `<span class="tech-tag">${tech}</span>`
-      ).join('');
-      
-      const metrics = project.metrics.map(metric => 
-        `<div class="project-metric"><span class="project-metric-value">${metric}</span></div>`
-      ).join('');
-      
-      projectCard.innerHTML = `
-        <div class="project-header">
-          <h3 class="project-title">${project.title}</h3>
-          <p class="project-description">${project.description}</p>
-        </div>
-        <div class="project-body">
-          <div class="project-technologies">
-            ${technologies}
-          </div>
-          <div class="project-metrics">
-            ${metrics}
-          </div>
-          <div class="project-actions">
-            <button class="btn btn--outline project-github-btn" data-github="${project.github}">
-              View on GitHub
-            </button>
-            <button class="btn btn--primary project-details-btn" data-project-index="${index}">
-              View Details
-            </button>
-          </div>
-        </div>
-      `;
-      
-      // Add event listeners to project buttons
-      const githubBtn = projectCard.querySelector('.project-github-btn');
-      const detailsBtn = projectCard.querySelector('.project-details-btn');
-      
-      githubBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.open(project.github, '_blank');
-      });
-      
-      detailsBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        this.openProjectModal(index);
-      });
-      
-      projectsGrid.appendChild(projectCard);
-    });
-  }*/
 
   populateCertifications() {
     const certificationsGrid = document.getElementById('certificationsGrid');
@@ -400,47 +371,74 @@ class PortfolioApp {
     });
   }
 
-  /*populateMetrics() {
-    const metricsGrid = document.getElementById('metricsGrid');
-    if (!metricsGrid) return;
+  openExperienceModal(expIndex) {
+    const exp = portfolioData.experience[expIndex];
+    const modal = document.getElementById('experienceModal');
+    const modalBody = document.getElementById('experienceModalBody');
     
-    const metricsData = [
-      {
-        icon: '🚀',
-        value: portfolioData.metrics.deploymentFrequency,
-        label: 'Deployment Frequency'
-      },
-      {
-        icon: '⚡',
-        value: portfolioData.metrics.leadTime,
-        label: 'Lead Time'
-      },
-      {
-        icon: '🔧',
-        value: portfolioData.metrics.mttr,
-        label: 'Mean Time to Recovery'
-      },
-      {
-        icon: '✅',
-        value: portfolioData.metrics.changeFailureRate,
-        label: 'Change Failure Rate'
-      }
-    ];
-    
-    metricsData.forEach((metric, index) => {
-      const metricCard = document.createElement('div');
-      metricCard.className = 'metric-card fade-in-up';
-      metricCard.style.animationDelay = `${index * 0.1}s`;
-      
-      metricCard.innerHTML = `
-        <div class="metric-icon">${metric.icon}</div>
-        <div class="metric-value">${metric.value}</div>
-        <div class="metric-label">${metric.label}</div>
+    if (!modal || !modalBody) return;
+
+    const promotedPill = exp.promoted
+      ? `<span class="promoted-pill" style="font-size:0.8rem; padding: 3px 12px;">↑ Promoted</span>`
+      : '';
+
+    const achievements = exp.achievements.map(achievement => 
+      `<li style="margin-bottom: 8px; padding-left: 16px; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--color-success); font-weight: bold;">✓</span>
+        ${achievement}
+      </li>`
+    ).join('');
+
+    const technologies = exp.technologies
+      ? exp.technologies.map(tech => `<span class="tech-tag">${tech}</span>`).join('')
+      : '';
+
+    // Previous role block in modal
+    let prevRoleHTML = '';
+    if (exp.previousRole) {
+      const prevAchievements = exp.previousRole.achievements.map(a =>
+        `<li style="margin-bottom: 8px; padding-left: 16px; position: relative;">
+          <span style="position: absolute; left: 0; color: var(--color-text-secondary); font-weight: bold;">–</span>
+          ${a}
+        </li>`
+      ).join('');
+      prevRoleHTML = `
+        <div style="margin-top: 24px; padding-top: 20px; border-top: 1px dashed var(--color-border, #e2e8f0);">
+          <div style="font-size:0.7rem; font-weight:700; color:var(--color-text-secondary); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px;">Previously at ${exp.company}</div>
+          <h4 style="margin-bottom:4px;">${exp.previousRole.role}</h4>
+          <p style="color: var(--color-text-secondary); font-size:0.85rem; margin-bottom: 12px;">${exp.previousRole.duration} • ${exp.location}</p>
+          <ul style="list-style: none; padding: 0;">
+            ${prevAchievements}
+          </ul>
+        </div>
       `;
-      
-      metricsGrid.appendChild(metricCard);
-    });
-  }*/
+    }
+    
+    modalBody.innerHTML = `
+      <h2 style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+        ${exp.role} ${promotedPill}
+      </h2>
+      <h3 style="color: var(--color-primary); margin-bottom: 8px;">${exp.company}</h3>
+      <p style="color: var(--color-text-secondary); margin-bottom: 24px;">
+        ${exp.duration} • ${exp.location}
+      </p>
+      <div style="margin-bottom: 24px;">
+        <h4>Key Achievements:</h4>
+        <ul style="list-style: none; padding: 0; margin-top: 12px;">
+          ${achievements}
+        </ul>
+      </div>
+      <div>
+        <h4>Technologies Used:</h4>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;">
+          ${technologies}
+        </div>
+      </div>
+      ${prevRoleHTML}
+    `;
+    
+    this.showModal(modal);
+  }
 
   openProjectModal(projectIndex) {
     const project = portfolioData.projects[projectIndex];
@@ -484,47 +482,6 @@ class PortfolioApp {
     this.showModal(modal);
   }
 
-  openExperienceModal(expIndex) {
-    const exp = portfolioData.experience[expIndex];
-    const modal = document.getElementById('experienceModal');
-    const modalBody = document.getElementById('experienceModalBody');
-    
-    if (!modal || !modalBody) return;
-    
-    const achievements = exp.achievements.map(achievement => 
-      `<li style="margin-bottom: 8px; padding-left: 16px; position: relative;">
-        <span style="position: absolute; left: 0; color: var(--color-success); font-weight: bold;">✓</span>
-        ${achievement}
-      </li>`
-    ).join('');
-    
-    const technologies = exp.technologies.map(tech => 
-      `<span class="tech-tag">${tech}</span>`
-    ).join('');
-    
-    modalBody.innerHTML = `
-      <h2>${exp.role}</h2>
-      <h3 style="color: var(--color-primary); margin-bottom: 8px;">${exp.company}</h3>
-      <p style="color: var(--color-text-secondary); margin-bottom: 24px;">
-        ${exp.duration} • ${exp.location}
-      </p>
-      <div style="margin-bottom: 24px;">
-        <h4>Key Achievements:</h4>
-        <ul style="list-style: none; padding: 0; margin-top: 12px;">
-          ${achievements}
-        </ul>
-      </div>
-      <div>
-        <h4>Technologies Used:</h4>
-        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;">
-          ${technologies}
-        </div>
-      </div>
-    `;
-    
-    this.showModal(modal);
-  }
-
   showModal(modal) {
     if (!modal) return;
     
@@ -548,44 +505,22 @@ class PortfolioApp {
   }
 
   setupEventListeners() {
-    // Modal close buttons
     const modalClose = document.getElementById('modalClose');
     const experienceModalClose = document.getElementById('experienceModalClose');
     const modalOverlay = document.getElementById('modalOverlay');
     const experienceModalOverlay = document.getElementById('experienceModalOverlay');
     
-    if (modalClose) {
-      modalClose.addEventListener('click', () => {
-        this.closeModal();
-      });
-    }
+    if (modalClose) modalClose.addEventListener('click', () => this.closeModal());
+    if (experienceModalClose) experienceModalClose.addEventListener('click', () => this.closeModal());
+    if (modalOverlay) modalOverlay.addEventListener('click', () => this.closeModal());
+    if (experienceModalOverlay) experienceModalOverlay.addEventListener('click', () => this.closeModal());
     
-    if (experienceModalClose) {
-      experienceModalClose.addEventListener('click', () => {
-        this.closeModal();
-      });
-    }
-    
-    if (modalOverlay) {
-      modalOverlay.addEventListener('click', () => {
-        this.closeModal();
-      });
-    }
-    
-    if (experienceModalOverlay) {
-      experienceModalOverlay.addEventListener('click', () => {
-        this.closeModal();
-      });
-    }
-    
-    // Escape key to close modal
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && this.activeModal) {
         this.closeModal();
       }
     });
     
-    // Contact form
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
       contactForm.addEventListener('submit', (e) => {
@@ -594,25 +529,22 @@ class PortfolioApp {
       });
     }
     
-    // Download resume button
     document.getElementById('downloadResume')?.addEventListener('click', (e) => {
-  e.preventDefault();
-  const resumeUrl = 'assets/resume/Swapnil_Shrishrimal_DevOps_Professional.pdf';
-  const a = document.createElement('a');
-  a.href = resumeUrl;
-  a.download = 'Swapnil_Shrishrimal_DevOps_Professional.pdf';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-});
-
+      e.preventDefault();
+      const resumeUrl = 'assets/resume/Swapnil_Shrishrimal_DevOps_Professional.pdf';
+      const a = document.createElement('a');
+      a.href = resumeUrl;
+      a.download = 'Swapnil_Shrishrimal_DevOps_Professional.pdf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
   }
 
   handleContactForm(form) {
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
     
-    // Simulate form submission
     const submitBtn = form.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
     
@@ -633,7 +565,6 @@ class PortfolioApp {
   }
 
   setupAnimations() {
-    // Intersection Observer for animations
     const observerOptions = {
       threshold: 0.1,
       rootMargin: '0px 0px -50px 0px'
@@ -648,7 +579,6 @@ class PortfolioApp {
       });
     }, observerOptions);
     
-    // Observe all animated elements
     document.querySelectorAll('.fade-in-up').forEach(el => {
       el.style.opacity = '0';
       el.style.transform = 'translateY(30px)';
