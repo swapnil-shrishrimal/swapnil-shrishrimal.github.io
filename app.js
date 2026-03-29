@@ -52,7 +52,7 @@ const portfolioData = {
       "technologies": ["Git", "Kubernetes", "Terraform", "Jenkins", "Python", "Docker", "Sysdig Monitor"],
       // ── Previous role at the same company ─────────────────────
       "previousRole": {
-        "role": "Software Engineer",           // ← your old title before promotion
+        "role": "Specialist - Software Engineering",           // ← your old title before promotion
         "duration": "Feb 2023 - Dec 2025",         // ← update with your actual end month
         "achievements": [
           "Led migration of microservices from the in-house NinjaGo tool to the Engineering System Platform (ESP).",
